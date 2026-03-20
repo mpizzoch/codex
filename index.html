@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verifica requisiti vs documentazione</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero card">
+        <p class="eyebrow">Analisi documentale</p>
+        <h1>Controlla se i requisiti sono coperti dalla documentazione</h1>
+        <p class="hero-copy">
+          Carica un file di requisiti e una o più fonti documentali. L'app estrae i requisiti,
+          cerca corrispondenze testuali e segnala dove la documentazione sembra soddisfare,
+          coprire parzialmente o non coprire ogni requisito.
+        </p>
+      </section>
+
+      <section class="workspace">
+        <div class="card controls">
+          <div>
+            <label for="requirementsFile">File requisiti</label>
+            <input id="requirementsFile" type="file" accept=".txt,.md,.csv,.json" />
+            <p class="hint">Usa testo semplice, Markdown, CSV o JSON con un elenco di requisiti.</p>
+          </div>
+
+          <div>
+            <label for="docsFiles">Documentazione di riferimento</label>
+            <input id="docsFiles" type="file" accept=".txt,.md,.csv,.json,.html" multiple />
+            <p class="hint">Puoi caricare più file: manuali, specifiche, FAQ o export di documentazione.</p>
+          </div>
+
+          <div class="settings-grid">
+            <div>
+              <label for="matchThreshold">Soglia copertura piena</label>
+              <input id="matchThreshold" type="range" min="0.2" max="0.9" step="0.05" value="0.55" />
+              <div class="range-value"><span id="matchThresholdValue">0.55</span></div>
+            </div>
+
+            <div>
+              <label for="partialThreshold">Soglia copertura parziale</label>
+              <input id="partialThreshold" type="range" min="0.05" max="0.6" step="0.05" value="0.25" />
+              <div class="range-value"><span id="partialThresholdValue">0.25</span></div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button id="analyzeButton" type="button">Analizza copertura</button>
+            <button id="sampleButton" type="button" class="ghost">Carica esempio</button>
+          </div>
+        </div>
+
+        <div class="card status-card">
+          <h2>Stato analisi</h2>
+          <div id="statusMessage" class="status-message info">
+            In attesa dei file. Puoi anche usare l'esempio per provare subito il flusso.
+          </div>
+          <div id="fileSummary" class="file-summary"></div>
+        </div>
+      </section>
+
+      <section class="results-grid">
+        <div class="card summary-card">
+          <h2>Riepilogo</h2>
+          <div id="summaryEmpty" class="empty-state">Nessuna analisi eseguita.</div>
+          <div id="summaryContent" class="summary-content hidden">
+            <div class="summary-metrics">
+              <article>
+                <span class="metric-label">Requisiti analizzati</span>
+                <strong id="requirementsCount">0</strong>
+              </article>
+              <article>
+                <span class="metric-label">Coperti</span>
+                <strong id="coveredCount">0</strong>
+              </article>
+              <article>
+                <span class="metric-label">Parziali</span>
+                <strong id="partialCount">0</strong>
+              </article>
+              <article>
+                <span class="metric-label">Non coperti</span>
+                <strong id="missingCount">0</strong>
+              </article>
+            </div>
+            <div class="coverage-bar" aria-hidden="true">
+              <span id="coveredBar" class="covered"></span>
+              <span id="partialBar" class="partial"></span>
+              <span id="missingBar" class="missing"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card results-card">
+          <div class="results-header">
+            <h2>Dettaglio requisiti</h2>
+            <label>
+              Filtro
+              <select id="statusFilter">
+                <option value="all">Tutti</option>
+                <option value="covered">Coperti</option>
+                <option value="partial">Parziali</option>
+                <option value="missing">Non coperti</option>
+              </select>
+            </label>
+          </div>
+          <div id="resultsEmpty" class="empty-state">I risultati appariranno qui dopo l'analisi.</div>
+          <div id="resultsList" class="results-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
